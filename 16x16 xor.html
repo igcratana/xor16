@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>16x16 XOR Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+        }
+        input {
+            width: 50px;
+            height: 30px;
+            text-align: center;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .result-box {
+            border: 1px solid black;
+            background-color: #f0f0f0;
+            text-align: center;
+            padding: 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>16x16 XOR Calculator</h1>
+
+        <h3>Number 1 Inputs:</h3>
+        <div class="grid" id="grid1">
+            <!-- 16 Input Boxes for Number 1 -->
+        </div>
+
+        <h3>Number 2 Inputs:</h3>
+        <div class="grid" id="grid2">
+            <!-- 16 Input Boxes for Number 2 -->
+        </div>
+
+        <button onclick="calculateXOR()">Calculate XOR</button>
+
+        <h3>XOR Results:</h3>
+        <div class="result-grid" id="resultGrid">
+            <!-- Results will be displayed here -->
+        </div>
+    </div>
+
+    <script>
+        // Create 16 input boxes for both Number 1 and Number 2
+        function createInputGrid(gridId) {
+            const grid = document.getElementById(gridId);
+            for (let i = 0; i < 16; i++) {
+                const inputBox = document.createElement('input');
+                inputBox.setAttribute('type', 'text');
+                inputBox.setAttribute('placeholder', '0');
+                inputBox.setAttribute('maxlength', '2'); // Limit to 2 hex digits
+                grid.appendChild(inputBox);
+            }
+        }
+
+        // Initialize the grids
+        createInputGrid('grid1');
+        createInputGrid('grid2');
+
+        // Calculate XOR for all 16 pairs
+        function calculateXOR() {
+            const grid1 = document.getElementById('grid1').getElementsByTagName('input');
+            const grid2 = document.getElementById('grid2').getElementsByTagName('input');
+            const resultGrid = document.getElementById('resultGrid');
+
+            // Clear previous results
+            resultGrid.innerHTML = '';
+
+            for (let i = 0; i < 16; i++) {
+                const hex1 = grid1[i].value.trim() || '0';
+                const hex2 = grid2[i].value.trim() || '0';
+
+                try {
+                    // Convert hex to decimal, perform XOR, then convert back to hex
+                    const dec1 = parseInt(hex1, 16);
+                    const dec2 = parseInt(hex2, 16);
+                    const xorResult = (dec1 ^ dec2).toString(16).toUpperCase();
+
+                    // Display the result in a grid box
+                    const resultBox = document.createElement('div');
+                    resultBox.classList.add('result-box');
+                    resultBox.innerText = xorResult;
+                    resultGrid.appendChild(resultBox);
+                } catch (e) {
+                    // If invalid input, show error
+                    const resultBox = document.createElement('div');
+                    resultBox.classList.add('result-box');
+                    resultBox.innerText = 'ERR';
+                    resultGrid.appendChild(resultBox);
+                }
+            }
+        }
+    </script>
+</body>
+</html>
